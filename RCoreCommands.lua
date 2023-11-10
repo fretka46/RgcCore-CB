@@ -6,18 +6,18 @@
     debug = true
 
     function OnScriptLoaded()
-        print("[RGC-RP Core] for Containment Breach by fretka46 - has been enabled!")
+        print("[RCore - CMD] has been enabled!")
         if (debug) then
-            print("[RGC-RP Core] Debug active") 
+            print("[RCore - CMD] Debug active") 
         else
-            print("[RGC-RP Core] Debug disabled")
+            print("[RCore - CMD] Debug disabled")
         end
         return -1
     end
 
 
     function OnPlayerConsole(playerId, message)
-        if (debug) then print("[RPCore - DEBUG] PlayerId "..playerId.." RA -> (" .. message .. ")") end
+        if (debug) then print("[RCore(CMD) - DEBUG] PlayerId "..playerId.." RA -> (" .. message .. ")") end
 
     -- Core method that separates words and make command syntax possible
         local separator = "%s"
