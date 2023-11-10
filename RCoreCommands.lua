@@ -84,12 +84,24 @@
         else size = 100
         end
     
-        --Executing command
         changeplayersize(cmd[3], size)
         sendmessage(playerId, "[RA] Player with Id ".. cmd[3])
         sendmessage(playerId, "[RA] has been scaled to size ".. size)
     
         return -1
+    end
+
+    function SetMtfTimerCmd(playerId, cmd)
+        if (cmd[2] != nil) then
+            setmtftimer(cmd[2])
+            sendmessage(playerId, "[RA] MTF Timer set to "..cmd[2])
+        else
+            sendmessage(playerId, "[RA] Sets MTF respawn time")
+            sendmessage(playerId, "[RA] Syntax: setmtftimer <seconds>")
+    end
+
+    function SpawnCiCmd(playerId)
+
     end
 
     function RestartServerCmd(playerId)
