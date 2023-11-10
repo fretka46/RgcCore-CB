@@ -48,7 +48,10 @@
             RestartServerCmd(playerId)
 
         elseif (cmd[1] == "setseed") then
-            SetMapSeed(cmd, playerId)
+            SetMapSeedCmd(cmd, playerId)
+
+        elseif (cmd[1] = "setmap") then
+            SetCustomMapCmd(cmd, playerId)
         end
 
     
@@ -105,10 +108,6 @@
         return -1
     end
 
-    function SpawnCiCmd(playerId)
-
-    end
-
     function RestartServerCmd(playerId)
         print("Player " ..playerId.." forced server restart")
         restartserver()
@@ -116,17 +115,31 @@
         return -1
     end
 
-    function SetMapSeed(cmd, playerId)
-        if (cmd[1] == nil) then
-            sendmessage(playerId, "[RA] Restarts server and changes map seed")
-            sendmessage(playerId, "[RA] Syntax: setseed <seed>")
-        else
-            print("Player " ..playerId.." forced seed change")
+    function SetMapSeedCmd(cmd, playerId)
+        if (cmd[2] != nil) then
+            print("Player "..playerId.." forced seed change")
             snedmessage(playerId, "[RA] Seed changed, restarting ...")
             setmapseed(cmd[2])
+        else
+            sendmessage(playerId, "[RA] Restarts server and changes map seed")
+            sendmessage(playerId, "[RA] Syntax: setseed <seed>")
         end
 
         return -1
+    end
+
+    function SetCustomMapCmd(cmd, playerId)
+        if (cmd[2] != nil) then
+            print("Player " ..playerId.." forced CustomMap change")
+            sendmessage(playerId, "[RA] Map changed, restarting ...")
+            setcustommap(cmd[2]..".cbmap2")
+        else
+            sendmessage(playerId, "[RA] Restarts server and changes custom map")
+            sendmessage(playerId, "[RA] Syntax: setmap <MapName>")
+        end
+
+        return -1
+        
     end
 
     function DebugCmd(playerId)
