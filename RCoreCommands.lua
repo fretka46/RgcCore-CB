@@ -36,6 +36,9 @@
     
         elseif (cmd[1] == "i") then
             SetIntercomCmd(cmd, playerId)
+        
+        elseif (cmd[1] == "setmtftimer") then
+            SetMtfTimerCmd(playerId, cmd)
 
         --Server RA
         elseif (cmd[1] == "debug") then
@@ -98,6 +101,8 @@
         else
             sendmessage(playerId, "[RA] Sets MTF respawn time")
             sendmessage(playerId, "[RA] Syntax: setmtftimer <seconds>")
+
+        return -1
     end
 
     function SpawnCiCmd(playerId)
