@@ -104,6 +104,7 @@
         else
             sendmessage(playerId, "[RA] Sets MTF respawn time")
             sendmessage(playerId, "[RA] Syntax: setmtftimer <seconds>")
+        end
 
         return -1
     end
@@ -116,7 +117,7 @@
     end
 
     function SetMapSeedCmd(cmd, playerId)
-        if (cmd[2] != nil) then
+        if (cmd[2] ~= nil) then
             print("Player "..playerId.." forced seed change")
             snedmessage(playerId, "[RA] Seed changed, restarting ...")
             setmapseed(cmd[2])
@@ -129,7 +130,7 @@
     end
 
     function SetCustomMapCmd(cmd, playerId)
-        if (cmd[2] != nil) then
+        if (cmd[2] ~= nil) then
             print("Player " ..playerId.." forced CustomMap change")
             sendmessage(playerId, "[RA] Map changed, restarting ...")
             setcustommap(cmd[2]..".cbmap2")
