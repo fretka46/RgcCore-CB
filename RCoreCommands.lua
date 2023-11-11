@@ -50,7 +50,7 @@
         elseif (cmd[1] == "setseed") then
             SetMapSeedCmd(cmd, playerId)
 
-        elseif (cmd[1] = "setmap") then
+        elseif (cmd[1] == "setmap") then
             SetCustomMapCmd(cmd, playerId)
         end
 
@@ -98,7 +98,7 @@
     end
 
     function SetMtfTimerCmd(playerId, cmd)
-        if (cmd[2] != nil) then
+        if (cmd[2] ~= nil) then
             setmtftimer(cmd[2])
             sendmessage(playerId, "[RA] MTF Timer set to "..cmd[2])
         else
