@@ -129,7 +129,7 @@
             return -1
         elseif (cmd[2] == "set") then
             setplayermute(cmd[2], cmd[3])
-            sendmessage(playerId, "[RA] Mute status set to "..cmd[3].."for ID"..cmd[2])
+            sendmessage(playerId, "[RA] Mute status set to "..cmd[4].." for ID "..cmd[3])
         else
             sendmessage(playerId, "[RA] Mute status for ID "..cmd[3].." -> "..getplayermute(cmd[3]))
         end
