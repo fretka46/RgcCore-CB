@@ -41,7 +41,7 @@
             SetMtfTimerCmd(playerId, cmd)
 
         --Banning RA
-        elseif (cmd[1] == mute) then
+        elseif (cmd[1] == "mute") then
             MuteCmd(playerId, cmd)
 
         --Server RA
@@ -168,7 +168,6 @@
         end
 
         return -1
-        
     end
 
     function DebugCmd(playerId)
