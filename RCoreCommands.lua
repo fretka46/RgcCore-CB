@@ -5,6 +5,13 @@
     --Enables/diables debugging
     debug = true
 
+    function Sleep(n)
+        local t = os.clock()
+        while os.clock() - t <= n do
+          -- nothing
+        end
+      end
+
     function OnScriptLoaded()
         print("[RCore - CMD] has been enabled!")
         if (debug) then
@@ -17,7 +24,7 @@
 
 
     function OnPlayerConsole(playerId, message)
-        if (debug) then print("[RCore(CMD) - DEBUG] PlayerId "..playerId.." RA -> (" .. message .. ")") end
+        if (debug) then print("[RCore(CMD) - DEBUG] "..getplayernickname(playerId).."("..playerId..") RA -> (" .. message .. ")") end
 
     -- Core method that separates words and make command syntax possible
         local separator = "%s"
@@ -32,7 +39,7 @@
             sendmessage(playerId, "[RA] Pong, pong!")
     
         elseif (cmd[1] == "size") then
-            ChangeSizeCmd(cmd)
+            ChangeSizeCmd(playerId, cmd)
     
         elseif (cmd[1] == "i") then
             SetIntercomCmd(cmd, playerId)
@@ -54,6 +61,7 @@
         elseif (cmd[1] == "setseed") then
             SetMapSeedCmd(cmd, playerId)
 
+            --Doesnt work, need fix
         elseif (cmd[1] == "setmap") then
             SetCustomMapCmd(cmd, playerId)
 
@@ -63,7 +71,7 @@
             print("[RCore(CMD) - DEBUG] Player sent unregistered command")
         end
 
-    
+
         return -1
     end
 
@@ -89,7 +97,7 @@
         return -1
     end
 
-    function ChangeSizeCmd(cmd)
+    function ChangeSizeCmd(playerId, cmd)
         local size
 
         if (cmd[2] == nil) then
@@ -97,16 +105,16 @@
             sendmessage(playerId, "[RA] -> size <set/reset/get> <Id> <size>")
             return -1
         elseif (cmd[2] == "get") or (cmd[2] == "g") then
-            sendmessage(playerId, "[RA] Size for Id ".. cmd[3] .." - "..getplayersize(playerId))
+            sendmessage(playerId, "[RA] Size for "..getplayernickname(cmd[3]).."("..cmd[3]..") - "..getplayersize(playerId))
             return -1
         elseif (cmd[2] == "set") or (cmd[2] == "s") then size = cmd[4]
         else size = 100
         end
-    
+
         changeplayersize(cmd[3], size)
-        sendmessage(playerId, "[RA] Player with Id ".. cmd[3])
-        sendmessage(playerId, "[RA] has been scaled to size ".. size)
-    
+        sendmessage(playerId, "[RA] Player "..getplayernickname(playerId).."("..cmd[3]..")")
+        sendmessage(playerId, "[RA] has been scaled to size - ".. size)
+
         return -1
     end
 
@@ -129,7 +137,7 @@
             return -1
         elseif (cmd[2] == "set") then
             setplayermute(cmd[2], cmd[3])
-            sendmessage(playerId, "[RA] Mute status set to "..cmd[4].." for ID "..cmd[3])
+            sendmessage(playerId, "[RA] Mute status set to "..cmd[4].." for "..getplayernickname(playerId).."("..cmd[3]..")")
         else
             sendmessage(playerId, "[RA] Mute status for ID "..cmd[3].." -> "..getplayermute(cmd[3]))
         end
@@ -138,8 +146,9 @@
     end
 
     function RestartServerCmd(playerId)
-        print("Player " ..playerId.." forced server restart")
+        print("Player "..getplayernickname(playerId).." forced server restart")
         sendmessage(playerId, "Server restart forced - Restarting ...")
+        Sleep(2)
         restartserver()
 
         return -1
@@ -147,8 +156,9 @@
 
     function SetMapSeedCmd(cmd, playerId)
         if (cmd[2] ~= nil) then
-            print("Player "..playerId.." forced seed change")
+            print("Player "..getplayernickname(playerId).."("..playerId..") forced seed change")
             sendmessage(playerId, "[RA] Seed changed, restarting ...")
+            Sleep(2)
             setmapseed(cmd[2])
         else
             sendmessage(playerId, "[RA] Restarts server and changes map seed")
@@ -160,7 +170,7 @@
 
     function SetCustomMapCmd(cmd, playerId)
         if (cmd[2] ~= nil) then
-            print("Player " ..playerId.." forced CustomMap change")
+            print("Player "..getplayernickname(playerId).."("..playerId..") forced CustomMap change")
             sendmessage(playerId, "[RA] Map changed, restarting ...")
             setcustommap(cmd[2]..".cbmap2")
         else
@@ -174,11 +184,11 @@
     function DebugCmd(playerId)
         if (debug) then
             sendmessage(playerId, "[RA] Debug disabled")
-            print("Debug disabled by Id "..playerId)
+            print("Debug disabled by "..getplayernickname(playerId).."("..playerId..")")
             debug = false
         else
             sendmessage(playerId, "[RA] Debug enabled")
-            print("Debug enabled by Id "..playerId)
+            print("Debug enabled by "..getplayernickname(playerId).."("..playerId..")")
             debug = true
         end
 
