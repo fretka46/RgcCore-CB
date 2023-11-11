@@ -139,6 +139,7 @@
 
     function RestartServerCmd(playerId)
         print("Player " ..playerId.." forced server restart")
+        sendmessage(playerId, "Server restart forced - Restarting ...")
         restartserver()
 
         return -1
