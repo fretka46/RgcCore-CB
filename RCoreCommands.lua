@@ -10,6 +10,7 @@
         while os.clock() - t <= n do
           -- nothing
         end
+        return -1
       end
 
     function OnScriptLoaded()
@@ -33,7 +34,6 @@
                 table.insert(cmd, str)
         end
     ---------------
-        print(cmd[1])
         --Basic RA
         if (cmd[1] == "ping") then
             sendmessage(playerId, "[RA] Pong, pong!")
@@ -52,9 +52,8 @@
         elseif (cmd[1] == "mute") then
             MuteCmd(playerId, cmd)
 
-        elseif (cmd[1] == "cban") then
-            print(cmd[2])
-            BanCmd(playerId, cmd)
+        elseif (cmd[1] == "tban") then
+            TempBCmd(playerId, cmd)
 
         --Server RA
         elseif (cmd[1] == "debug") then
@@ -75,7 +74,6 @@
         elseif (debug) then
             print("[RCore(CMD) - DEBUG] Player sent unregistered command")
         end
-
 
         return -1
     end
@@ -153,53 +151,59 @@
         return -1
     end
 
-    function BanCmd(playerId, cmd)
-        print(cmd[2])
+    function TempBCmd(playerId, cmd)
+        
         if (cmd[2] == nil) then
-            sendmessage(playerId, "[RA] Bans player for specified duration")
-            sendmessage(playerId, "[RA] Syntax: ban <Id> <m/h/d/perm> <number> <reason>")
+          sendmessage(playerId, "[RA] Bans player for specified duration")
+          sendmessage(playerId, "[RA] Syntax: ban <Id> <m/h/d/perm> <number> <reason>")
 
-        --Minutes
-        elseif (cmd[3] == "m") then
-            putinivalue("../PlayerData/playerdata.ini", getplayersteamid(cmd[2]), "ban_end", getunixtime()+tonumber(cmd[4])*60)
-            Kick(cmd[2], "You are banned - Reason: [ "..cmd[5].." ] Ban expires in: "..cmd[3].." minutes - for questions, contact us on discord")
-            
-            putinivalue("../PlayerData/banlog.ini", getplayersteamid(cmd[2]), "nickname", getplayernickname(cmd[2]))
-            putinivalue("../PlayerData/banlog.ini", getplayersteamid(cmd[2]), cmd[4].." - "..cmd[5].."m", getplayernickname(playerId))
-            BanAssitent(cmd)
-            
-        --Hours
-        elseif (cmd[3] == "h") then
-            putinivalue("../PlayerData/playerdata.ini", getplayersteamid(cmd[2]), "ban_end", getunixtime()+tonumber(cmd[4])*60*60)
-            BanAssitent(cmd)
-            Kick(cmd[2], "You are banned - Reason: [ "..cmd[5].." ] Ban expires in: "..cmd[3].." hours - for questions, contact us on discord")
+      --Minutes
+       elseif (cmd[3] == "m") then
+          putinivalue("../PlayerData/playerdata.ini", getplayersteamid(cmd[2]), "ban_end", getunixtime()+tonumber(cmd[4])*60)
+          Kick(cmd[2], "You are banned - Reason: [ "..cmd[5].." ] Ban expires in: "..cmd[3].." minutes - for questions, contact us on discord")
+          
+          putinivalue("../PlayerData/banlog.ini", getplayersteamid(cmd[2]), "nickname", getplayernickname(cmd[2]))
+          putinivalue("../PlayerData/banlog.ini", getplayersteamid(cmd[2]), cmd[4].." - "..cmd[5].."m", getplayernickname(playerId))
+          BAssitent(cmd)
+          
+      --Hours
+      elseif (cmd[3] == "h") then
+          putinivalue("../PlayerData/playerdata.ini", getplayersteamid(cmd[2]), "ban_end", getunixtime()+tonumber(cmd[4])*60*60)
+          BanAssitent(cmd)
+          Kick(cmd[2], "You are banned - Reason: [ "..cmd[5].." ] Ban expires in: "..cmd[3].." hours - for questions, contact us on discord")
 
-            putinivalue("../PlayerData/banlog.ini", getplayersteamid(cmd[2]), "nickname", getplayernickname(cmd[2]))
-            putinivalue("../PlayerData/banlog.ini", getplayersteamid(cmd[2]), cmd[4].." - "..cmd[5].."h", getplayernickname(playerId))
-            BanAssitent(cmd)
+          putinivalue("../PlayerData/banlog.ini", getplayersteamid(cmd[2]), "nickname", getplayernickname(cmd[2]))
+          putinivalue("../PlayerData/banlog.ini", getplayersteamid(cmd[2]), cmd[4].." - "..cmd[5].."h", getplayernickname(playerId))
+          BAssitent(cmd)
 
-        --Days
-        elseif (cmd[3] == "d") then
-            putinivalue("../PlayerData/playerdata.ini", getplayersteamid(cmd[2]), "ban_end", getunixtime()+tonumber(cmd[4])*60*60*24)
-            Kick(cmd[2], "You are banned - Reason: [ "..cmd[5].." ] Ban expires in: "..cmd[3].." days - for questions, contact us on discord")
+      --Days
+      elseif (cmd[3] == "d") then
+          putinivalue("../PlayerData/playerdata.ini", getplayersteamid(cmd[2]), "ban_end", getunixtime()+tonumber(cmd[4])*60*60*24)
+          Kick(cmd[2], "You are banned - Reason: [ "..cmd[5].." ] Ban expires in: "..cmd[3].." days - for questions, contact us on discord")
 
-            putinivalue("../PlayerData/banlog.ini", getplayersteamid(cmd[2]), "nickname", getplayernickname(cmd[2]))
-            putinivalue("../PlayerData/banlog.ini", getplayersteamid(cmd[2]), cmd[4].." - "..cmd[5].."d", getplayernickname(playerId))
-            BanAssitent(cmd)
+          putinivalue("../PlayerData/banlog.ini", getplayersteamid(cmd[2]), "nickname", getplayernickname(cmd[2]))
+          putinivalue("../PlayerData/banlog.ini", getplayersteamid(cmd[2]), cmd[4].." - "..cmd[5].."d", getplayernickname(playerId))
+          BAssitent(cmd)
 
-        --Perma
-        elseif (cmd[3] == "perm") then
-            putinivalue("../PlayerData/playerdata.ini", getplayersteamid(cmd[2]), "ban_end", 9999999998)
-            Kick(cmd[2], "You are permabanned - Reason: [ "..cmd[5].." ] - for questions, contact us on discord")
+      --Perma
+      elseif (cmd[3] == "perm") then
+          putinivalue("../PlayerData/playerdata.ini", getplayersteamid(cmd[2]), "ban_end", 9999999998)
+          Kick(cmd[2], "You are permabanned - Reason: [ "..cmd[5].." ] - for questions, contact us on discord")
 
-            putinivalue("../PlayerData/banlog.ini", getplayersteamid(cmd[2]), "nickname", getplayernickname(cmd[2]))
-            putinivalue("../PlayerData/banlog.ini", getplayersteamid(cmd[2]), "PERMABAN - "..cmd[5], getplayernickname(playerId))
-            BanAssitent(cmd)
-        end
+          putinivalue("../PlayerData/banlog.ini", getplayersteamid(cmd[2]), "nickname", getplayernickname(cmd[2]))
+          putinivalue("../PlayerData/banlog.ini", getplayersteamid(cmd[2]), "PERMABAN - "..cmd[5], getplayernickname(playerId))
+          BAssitent(cmd)
+      else
+          sendmessage(playerId, "[RA] Bans player for specified duration")
+          sendmessage(playerId, "[RA] Syntax: ban <Id> <m/h/d/perm> <number> <reason>")
+      end
 
-        return -1
-    end
-    function BanAssitent(cmd)
+      return -1
+  end
+
+
+
+    function BAssitent(cmd)
         putinivalue("../PlayerData/playerdata.ini", getplayersteamid(cmd[2]), "ban_reason", cmd[5])
         updateinifile("../PlayerData/playerdata.ini")
         updateinifile("../PlayerData/banlog.ini")

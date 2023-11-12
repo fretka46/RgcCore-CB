@@ -48,7 +48,7 @@ function OnIncomingConnection(nickname, ip, steamid)
 
     if (banend > getunixtime()) then
 
-        print("Banned player tried connection - "..nickname.." ("..ip..") dropping connection ...")
+        print("[RCore - DATA] Banned player tried connection - "..nickname.." ("..ip..") dropping ...")
 
         local banreason = getinivalue("../PlayerData/playerdata.ini", steamid, "ban_reason", 0)
         local banduration = (banend-getunixtime())/60/60
