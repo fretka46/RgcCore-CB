@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-global
 --[[
 
     RGC CORE FOR CONTAINEMNT BREACH (Database)
@@ -44,7 +45,12 @@ end
 
 
 function OnIncomingConnection(nickname, ip, steamid)
+    print("player trying connection")
+
     local banend = tonumber(getinivalue("../PlayerData/playerdata.ini", steamid, "ban_end", 0))
+
+
+
 
     if (banend > getunixtime()) then
 
@@ -59,6 +65,7 @@ function OnIncomingConnection(nickname, ip, steamid)
 end
 
 function OnPlayerConnect(playerId)
+    print("player connected")
 
     local steamid = getplayersteamid(playerId)
 
@@ -70,9 +77,7 @@ function OnPlayerConnect(playerId)
 	PlayerDeaths[playerId]		    = tonumber(getinivalue("../PlayerData/playerdata.ini", steamid, "deaths", "0"))
 	PlayerEscapes[playerId]		    = tonumber(getinivalue("../PlayerData/playerdata.ini", steamid, "escapes", "0"))
 
-    putinivalue("../PlayerData/playerdata.ini", steamid, "last_ip", getplayerip(playerId))
-
-    return-1
+    return -1
 end
 
 function OnPlayerDisconnect(playerId)
@@ -80,6 +85,7 @@ function OnPlayerDisconnect(playerId)
 	local unixtime = getunixtime()
 
     putinivalue("../PlayerData/playerdata.ini", steamid, "nickname", getplayernickname(playerId))
+    putinivalue("../PlayerData/playerdata.ini", steamid, "last_ip", getplayerip(playerId))
 	
 	if PlayerFirstConnect[playerId] == 0 then
         putinivalue("../PlayerData/playerdata.ini", steamid, "first_connect", PlayerTimeConnect[playerId])
@@ -87,9 +93,8 @@ function OnPlayerDisconnect(playerId)
 	
 	putinivalue("../PlayerData/playerdata.ini", steamid, "last_connect", unixtime)
 	
-	--local time = unixtime - PlayerTimeConnect[playerId]
-	--time = (time + PlayerPlayTime[playerId])
-    local time = 0
+	local time = unixtime - PlayerTimeConnect[playerId]
+	time = (time + PlayerPlayTime[playerId])
 	putinivalue("../PlayerData/playerdata.ini", steamid, "play_time", time)
 	
 	putinivalue("../PlayerData/playerdata.ini", steamid, "kills_human", PlayerHumanKills[playerId])
