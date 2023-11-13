@@ -180,7 +180,7 @@
           sendmessage(playerId, "[RA] Syntax: ban <Id> <m/h/d/perm> <number> <reason>")
         else
 
-            if (tonumber(cmd[2]) == 10) then
+            if (tonumber(cmd[2]) == playerId) then
                 sendmessage(playerId, "[RA] You cannot ban yourself")
                 return -1
             elseif (isplayeradmin(playerId)) and (getplayersteamid(playerId) ~= SuperuserID) then
@@ -190,7 +190,6 @@
             --Minutes
             elseif (cmd[3] == "m") then
                 sendmessage(cmd[2], "You are banned - Reason: [ "..cmd[5].." ] Ban expires in: "..cmd[4].." minutes - for questions, contact us on discord")
-                Sleep(5)
                 putinivalue("../PlayerData/playerdata.ini", getplayersteamid(cmd[2]), "ban_end", getunixtime()+tonumber(cmd[4])*60)
                 
                 putinivalue("../PlayerData/banlog.ini", getplayersteamid(cmd[2]), "nickname", getplayernickname(cmd[2]))
