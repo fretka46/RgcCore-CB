@@ -67,6 +67,10 @@ end
 
 function OnPlayerDisconnect(playerId, message)
 
+  if(DebugDATA) then
+    print("[RCore(DATA) - DEBUG] Player disconnected, saving - "..steamid)
+  end
+
   local steamid = getplayersteamid(playerId)
 	local unixtime = getunixtime()
 

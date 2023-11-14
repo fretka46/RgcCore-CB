@@ -175,7 +175,7 @@ function TempBCmd(playerId, cmd)
     if (cmd[2] == nil) then
         sendmessage(playerId, "[RA] Bans player for specified duration")
         sendmessage(playerId, "[RA] Syntax: ban <Id> <time> <reason>")
-    elseif (isplayerconnected(cmd[2]) == false) then
+    elseif (isplayerconnected(cmd[2]) == 0) then
         sendmessage(playerId, "[RA] Player is not connected")
         return -1
     else
