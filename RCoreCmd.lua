@@ -334,6 +334,7 @@ function PlayerInfoCmd(playerId, cmd)
                 sendmessage(playerId, "[RA] First connect: "..TransferUnixToDate(getinivalue("../PlayerData/playerdata.ini", cmd[3], "first_connect", "0")))
                 sendmessage(playerId, "[RA] Last connect: "..TransferUnixToDate(getinivalue("../PlayerData/playerdata.ini", cmd[3], "last_connect", "0")))
                 sendmessage(playerId, "[RA] Play time: "..FormatTransfer(getinivalue("../PlayerData/playerdata.ini", cmd[3], "play_time", "0")))
+                sendmessage(playerId, "Note: This is offline player info, some data may be outdated")
                 sendmessage(playerId, "-------------------------------")
         end
     end
