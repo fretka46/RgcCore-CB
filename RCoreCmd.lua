@@ -43,7 +43,7 @@
             SetMtfTimerCmd(playerId, cmd)
 
         elseif (cmd[1] == "createnpc") then
-            CerateNpcCmd(playerId, cmd)
+            CreateNpcCmd(playerId, cmd)
 
         --Banning RA
         -- Doesnt work, need fix
@@ -175,6 +175,9 @@ function TempBCmd(playerId, cmd)
     if (cmd[2] == nil) then
         sendmessage(playerId, "[RA] Bans player for specified duration")
         sendmessage(playerId, "[RA] Syntax: ban <Id> <time> <reason>")
+    elseif (isplayerconnected(cmd[2]) == false) then
+        sendmessage(playerId, "[RA] Player is not connected")
+        return -1
     else
         if (tonumber(cmd[2]) == 9) then
             sendmessage(playerId, "[RA] You cannot ban yourself")
