@@ -334,6 +334,7 @@ function PlayerInfoCmd(playerId, cmd)
                     sendmessage(playerId, "Note: This is offline player info, some data may be outdated")
                 end
         end
+        saveinifile("../PlayerData/playerdata.ini")
     end
 end
 
