@@ -313,7 +313,7 @@ function PlayerInfoCmd(playerId, cmd)
                 if (getplayersteamid(playerId) == SuperuserID) then
                     sendmessage(playerId, "[RA] Last IP: "..getinivalue("../PlayerData/playerdata.ini", cmd[3], "last_ip", "0"))
                 end
-                
+
                 --Outputs ban information
                 if (banend > unixtime) then
                     sendmessage(playerId, "[RA] Banned: Yes")
@@ -334,10 +334,6 @@ function PlayerInfoCmd(playerId, cmd)
                 sendmessage(playerId, "[RA] First connect: "..TransferUnixToDate(getinivalue("../PlayerData/playerdata.ini", cmd[3], "first_connect", "0")))
                 sendmessage(playerId, "[RA] Last connect: "..TransferUnixToDate(getinivalue("../PlayerData/playerdata.ini", cmd[3], "last_connect", "0")))
                 sendmessage(playerId, "[RA] Play time: "..FormatTransfer(getinivalue("../PlayerData/playerdata.ini", cmd[3], "play_time", "0")))
-                
-                if (isplayerconnected(cmd[3]) == 0) then
-                    sendmessage(playerId, "Note: This is offline player info, some data may be outdated")
-                end
                 sendmessage(playerId, "-------------------------------")
         end
     end
