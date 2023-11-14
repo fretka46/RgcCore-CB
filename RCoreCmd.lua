@@ -190,7 +190,7 @@ function TempBCmd(playerId, cmd)
             if (cmd[3] == "perm") then
                 banDurationInSeconds = 9999999998
             else
-                banDurationInSeconds = timeToSeconds(cmd[3])
+                banDurationInSeconds = TimeToSeconds(cmd[3])
             end
 
             putinivalue("../PlayerData/playerdata.ini", getplayersteamid(cmd[2]), "ban_end", getunixtime() + banDurationInSeconds)
