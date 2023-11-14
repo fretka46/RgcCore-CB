@@ -72,6 +72,8 @@
                 RconCmd(playerId, message)
             elseif (cmd[1] == "savedb") then
                 SaveDatabaseCmd(playerId)
+            elseif (cmd[1] == "test") then
+                sendmessage(playerId, "[RA] Test\n line command")
             end
 
 
@@ -264,8 +266,8 @@ function PlayerInfoCmd(playerId, cmd)
         local unixtime = getunixtime()
         if (cmd[2] == "id") then
                 local steamid = getplayersteamid(cmd[3])
-                local banend = getinivalue("../PlayerData/playerdata.ini", steamid, "ban_end", "0")
-                local muteend = getinivalue("../PlayerData/playerdata.ini", steamid, "mute_end", "0")
+                local banend = tonumber(getinivalue("../PlayerData/playerdata.ini", steamid, "ban_end", "0"))
+                local muteend = tonumber(getinivalue("../PlayerData/playerdata.ini", steamid, "mute_end", "0"))
                 sendmessage(playerId, "[RA] Player "..getplayernickname(cmd[3]).."("..cmd[3]..")")
                 sendmessage(playerId, "[RA] SteamID: "..getplayersteamid(cmd[3]))
 
@@ -297,8 +299,8 @@ function PlayerInfoCmd(playerId, cmd)
                 sendmessage(playerId, "[RA] Play time: "..FormatTransfer(getinivalue("../PlayerData/playerdata.ini", getplayersteamid(cmd[3]), "play_time", "0")))
 
         elseif (cmd[2] == "steamid") then
-                local banend = getinivalue("../PlayerData/playerdata.ini", cmd[3], "ban_end", "0")
-                local muteend = getinivalue("../PlayerData/playerdata.ini", cmd[3], "mute_end", "0")
+                local banend = tonumber(getinivalue("../PlayerData/playerdata.ini", cmd[3], "ban_end", "0"))
+                local muteend = tonumber(getinivalue("../PlayerData/playerdata.ini", cmd[3], "mute_end", "0"))
                 sendmessage(playerId, "[RA] Player "..getinivalue("../PlayerData/playerdata.ini", cmd[3], "nickname", "0").."("..cmd[3]..")")
                 sendmessage(playerId, "[RA] SteamID: "..cmd[3])
 
