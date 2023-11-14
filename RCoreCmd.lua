@@ -275,7 +275,7 @@ function PlayerInfoCmd(playerId, cmd)
                 sendmessage(playerId, "[RA] SteamID: "..getplayersteamid(cmd[3]))
 
                 -- Shows IP only to Superuser
-                if (playerId == SuperuserID) then
+                if (getplayersteamid(playerId) == SuperuserID) then
                     sendmessage(playerId, "[RA] IP: "..getplayerip(cmd[3]))
                 end
                 
@@ -310,7 +310,7 @@ function PlayerInfoCmd(playerId, cmd)
                 sendmessage(playerId, "[RA] SteamID: "..cmd[3])
 
                 -- Shows IP only to Superuser
-                if (playerId == SuperuserID) then
+                if (getplayersteamid(playerId) == SuperuserID) then
                     sendmessage(playerId, "[RA] Last IP: "..getinivalue("../PlayerData/playerdata.ini", cmd[3], "last_ip", "0"))
                 end
                 
