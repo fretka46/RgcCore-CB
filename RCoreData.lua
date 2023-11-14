@@ -39,7 +39,6 @@ function OnScriptLoaded()
   else
       print("[RCore - DATA] Debug disabled")
   end
-  
   return -1
 end
 

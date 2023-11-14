@@ -29,9 +29,48 @@ function OnIncomingConnection(nickname, ip, steamid)
         print("[RCore - BANC] Banned player tried connection - "..nickname.." ("..ip..") dropping ...")
 
         local banreason = getinivalue("../PlayerData/playerdata.ini", steamid, "ban_reason", 0)
-        local banduration = (banend-getunixtime())/60/60
-        return "You are banned - Reason: [ "..banreason.." ] Ban expires in: "..banduration.." hours - for questions, contact us on discord"
+        local banduration = FormatTransfer(banend-getunixtime())
+        return "You are banned             Reason: [ "..banreason.." ] Ban expires in: "..banduration.." - for questions, contact us on discord"
 
     else return -1
     end
 end
+
+function FormatTransfer(sec)
+    local sec = tonumber(sec)
+    local M = math.floor(sec / (30 * 86400))
+    sec = sec - (M * 30 * 86400)
+    local d = math.floor(sec / 86400)
+    sec = sec - (d * 86400)
+    local h = math.floor(sec / 3600)
+    sec = sec - (h * 3600)
+    local m = math.floor(sec / 60)
+    local s = sec - (m * 60)
+    local str = ""
+    if M > 0 then str = str .. M .. "M " end
+    if d > 0 then str = str .. d .. "d " end
+    if h > 0 then str = str .. h .. "h " end
+    if m > 0 then str = str .. m .. "m " end
+    if s > 0 then str = str .. s .. "s" end
+    return str
+end
+
+function timeToSeconds(timeStr)
+    local totalSeconds = 0
+    local units = {
+        M = 30 * 24 * 60 * 60,  -- month in seconds
+        d = 24 * 60 * 60,  -- day in seconds
+        h = 60 * 60,  -- hour in seconds
+        m = 60  -- minute in seconds
+    }
+
+    for value, unit in string.gmatch(timeStr, "(%d+)(%a)") do
+        totalSeconds = totalSeconds + tonumber(value) * units[unit]
+    end
+
+    return totalSeconds
+end
+local timeStr = "12M16d17m"
+local seconds = timeToSeconds(timeStr)
+print(seconds)  -- Outputs: 13111200
+print("To DDMMSS: -> "..TransferSecToDDMMSS(seconds))
