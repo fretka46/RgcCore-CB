@@ -145,7 +145,7 @@ function CreateNpcCmd(playerId, cmd)
             local npcid = createnpc(cmd[3])
             sendmessage(playerId, "[RA] Npc created with id -> "..npcid)
         elseif (cmd[2] == "gettype") then
-            sendmessage(playerId, "[RA] NPC Type for id: "..cmd[3].." is -> "..getnpcid(cmd[3]))
+            sendmessage(playerId, "[RA] NPC Type for id: "..cmd[3].." is -> "..getnpctype(cmd[3]))
         end
     else
         sendmessage(playerId, "[RA] Creates a new NPC")
