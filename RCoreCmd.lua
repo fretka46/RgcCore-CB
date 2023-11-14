@@ -141,10 +141,11 @@ end
 function MuteCmd(playerId, cmd)
     if (cmd[2] == nil) then
         sendmessage(playerId, "[RA] Handles muting system for players")
-        sendmessage(playerid, "[RA] Syntax: mute <set/get> <id> <1/0>")
+        sendmessage(playerId, "[RA] Syntax: mute <set/get> <id> <1/0>")
+        sendmessage(playerId, "[RA] Info: 0 - Muted, 1 - Unmuted")
         return -1
     elseif (cmd[2] == "set") then
-        setplayermute(cmd[3], cmd[4])
+        setplayermute(cmd[4], cmd[3])
         print(cmd[3]..cmd[4])
         sendmessage(playerId, "[RA] Mute status set to "..getplayermute(cmd[3]).." for "..getplayernickname(cmd[3]).."("..cmd[3]..")")
     else
