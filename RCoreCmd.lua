@@ -50,6 +50,8 @@
             TempBCmd(playerId, cmd)
         elseif (cmd[1] == "tkick") then
             KickCmd(playerId, cmd)
+        elseif (cmd[1] == "pinfo") then
+            PlayerInfoCmd(playerId, cmd)
 
         --Server RA
         elseif (cmd[1] == "debug") then
@@ -210,7 +212,86 @@ function KickCmd(playerId, cmd)
         kick(cmd[2], cmd[3])
         sendmessage(playerId, "[RA] Player "..getplayernickname(cmd[2]).." kicked")
     end
-    
+end
+
+function PlayerInfoCmd(playerId, cmd)
+    if (cmd[2] == nil) then
+        sendmessage(playerId, "[RA] Shows admin player info")
+        sendmessage(playerId, "[RA] Syntax: pinfo <id/steamdid> <id/steamdid>")
+        sendmessage(playerId, "[RA] Example: pinfo id 9")
+    else
+        local unixtime = getunixtime()
+        if (cmd[2] == "id") then
+                local steamid = getplayersteamid(cmd[3])
+                local banend = getinivalue("../PlayerData/playerdata.ini", steamid, "ban_end", "0")
+                local muteend = getinivalue("../PlayerData/playerdata.ini", steamid, "mute_end", "0")
+                sendmessage(playerId, "[RA] Player "..getplayernickname(cmd[3]).."("..cmd[3]..")")
+                sendmessage(playerId, "[RA] SteamID: "..getplayersteamid(cmd[3]))
+
+                -- Shows IP only to Superuser
+                if (playerId == SuperuserID) then
+                    sendmessage(playerId, "[RA] IP: "..getplayerip(cmd[3]))
+                end
+                
+                --Outputs ban information
+                if (banend > unixtime) then
+                    sendmessage(playerId, "[RA] Banned: Yes")
+                    sendmessage(playerId, "[RA] Ban reason: "..getinivalue("../PlayerData/playerdata.ini", steamid, "ban_reason", "0"))
+                    sendmessage(playerId, "[RA] Ban expires in: "..FormatTransfer(banend-unixtime))
+                else
+                    sendmessage(playerId, "[RA] Banned: No")
+                end
+
+                --Outputs mute information
+                if (muteend > unixtime) then
+                    sendmessage(playerId, "[RA] Global muted: Yes")
+                    sendmessage(playerId, "[RA] Global mute expires in: "..FormatTransfer(muteend-unixtime))
+                else
+                    sendmessage(playerId, "[RA] Global muted: No")
+                end
+
+                sendmessage(playerId, "[RA] Current Mute status: "..getplayermute(cmd[3]))
+                sendmessage(playerId, "[RA] First connect: "..TransferUnixToDate(getinivalue("../PlayerData/playerdata.ini", getplayersteamid(cmd[3]), "first_connect", "0")))
+                sendmessage(playerId, "[RA] Last connect: "..TransferUnixToDate(getinivalue("../PlayerData/playerdata.ini", getplayersteamid(cmd[3]), "last_connect", "0")))
+                sendmessage(playerId, "[RA] Play time: "..FormatTransfer(getinivalue("../PlayerData/playerdata.ini", getplayersteamid(cmd[3]), "play_time", "0")))
+
+        elseif (cmd[2] == "steamid") then
+                local banend = getinivalue("../PlayerData/playerdata.ini", cmd[3], "ban_end", "0")
+                local muteend = getinivalue("../PlayerData/playerdata.ini", cmd[3], "mute_end", "0")
+                sendmessage(playerId, "[RA] Player "..getinivalue("../PlayerData/playerdata.ini", cmd[3], "nickname", "0").."("..cmd[3]..")")
+                sendmessage(playerId, "[RA] SteamID: "..cmd[3])
+
+                -- Shows IP only to Superuser
+                if (playerId == SuperuserID) then
+                    sendmessage(playerId, "[RA] Last IP: "..getinivalue("../PlayerData/playerdata.ini", cmd[3], "last_ip", "0"))
+                end
+                
+                --Outputs ban information
+                if (banend > unixtime) then
+                    sendmessage(playerId, "[RA] Banned: Yes")
+                    sendmessage(playerId, "[RA] Ban reason: "..getinivalue("../PlayerData/playerdata.ini", cmd[3], "ban_reason", "0"))
+                    sendmessage(playerId, "[RA] Ban expires in: "..FormatTransfer(banend-unixtime))
+                else
+                    sendmessage(playerId, "[RA] Banned: No")
+                end
+
+                --Outputs mute information
+                if (muteend > unixtime) then
+                    sendmessage(playerId, "[RA] Global muted: Yes")
+                    sendmessage(playerId, "[RA] Global mute expires in: "..FormatTransfer(muteend-unixtime))
+                else
+                    sendmessage(playerId, "[RA] Global muted: No")
+                end
+
+                sendmessage(playerId, "[RA] First connect: "..TransferUnixToDate(getinivalue("../PlayerData/playerdata.ini", cmd[3], "first_connect", "0")))
+                sendmessage(playerId, "[RA] Last connect: "..TransferUnixToDate(getinivalue("../PlayerData/playerdata.ini", cmd[3], "last_connect", "0")))
+                sendmessage(playerId, "[RA] Play time: "..FormatTransfer(getinivalue("../PlayerData/playerdata.ini", cmd[3], "play_time", "0")))
+                
+                if (isplayerconnected(cmd[3]) == 0) then
+                    sendmessage(playerId, "Note: This is offline player info, some data may be outdated")
+                end
+        end
+    end
 end
 
 
@@ -319,6 +400,11 @@ function FormatTransfer(sec)
     if m > 0 then str = str .. m .. "m " end
     if s > 0 then str = str .. s .. "s" end
     return str
+end
+
+function TransferUnixToDate(unixtime)
+    local date = os.date("%d/%m/%y %H:%M:%S", unixtime)
+    return date
 end
 
 function TimeToSeconds(timeStr)
