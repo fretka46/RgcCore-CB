@@ -67,12 +67,12 @@ end
 
 function OnPlayerDisconnect(playerId, message)
 
+  local steamid = getplayersteamid(playerId)
+	local unixtime = getunixtime()
+
   if(DebugDATA) then
     print("[RCore(DATA) - DEBUG] Player disconnected, saving - "..steamid)
   end
-
-  local steamid = getplayersteamid(playerId)
-	local unixtime = getunixtime()
 
     putinivalue("../PlayerData/playerdata.ini", steamid, "nickname", getplayernickname(playerId))
     putinivalue("../PlayerData/playerdata.ini", steamid, "last_ip", getplayerip(playerId))

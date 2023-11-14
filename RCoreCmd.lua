@@ -42,12 +42,9 @@
         elseif (cmd[1] == "setmtftimer") then
             SetMtfTimerCmd(playerId, cmd)
 
-        elseif (cmd[1] == "npc") then
-            CreateNpcCmd(playerId, cmd)
-
         --Banning RA
         -- Doesnt work, need fix
-        elseif (cmd[1] == "mute") then
+        elseif (cmd[1] == "tmute") then
             MuteCmd(playerId, cmd)
         elseif (cmd[1] == "tban") then
             TempBCmd(playerId, cmd)
@@ -137,20 +134,6 @@ function SetMtfTimerCmd(playerId, cmd)
     end
 
     return -1
-end
-
-function CreateNpcCmd(playerId, cmd)
-    if (cmd[2] ~= nil) then
-        if (cmd[2] == "create") then
-            local npcid = createnpc(cmd[3])
-            sendmessage(playerId, "[RA] Npc created with id -> "..npcid)
-        elseif (cmd[2] == "gettype") then
-            sendmessage(playerId, "[RA] NPC Type for id: "..cmd[3].." is -> "..getnpctype(cmd[3]))
-        end
-    else
-        sendmessage(playerId, "[RA] Creates a new NPC")
-        sendmessage(playerId, "[RA] Syntax: npc <create/gettype> <npctype/getid>")
-    end
 end
 
 
