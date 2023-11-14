@@ -36,6 +36,24 @@ function OnIncomingConnection(nickname, ip, steamid)
     end
 end
 
+function OnPlayerConnect(playerId)
+    local muteend = tonumber(getinivalue("../PlayerData/playerdata.ini", getplayersteamid(playerId), "mute_end", 0))
+    if (muteend > getunixtime()) then
+        print("[RCore - BANC] Registered muted player - "..getplayernickname(playerId).." ("..getplayerip(playerId)..") muting ...")
+        local mutereason = getinivalue("../PlayerData/playerdata.ini", getplayersteamid(playerId), "mute_reason", 0)
+        local muteduration = FormatTransfer(muteend-getunixtime())
+        setplayermute(0, playerId)
+        sendmessage(playerId, "[SERVER] You are muted - Reason: "..mutereason")")
+        sendmessage(playerId, "[SERVER] Mute expires in: "..FormatTransfer(muteduration).." - For questions, contact us on discord")
+        
+    end
+    if (DebugBANC) then
+    print("[RCore(BANC) - DEBUG] Registered player connection")
+    end
+
+    return -1
+end
+
 function FormatTransfer(sec)
     local sec = tonumber(sec)
     local M = math.floor(sec / (30 * 86400))

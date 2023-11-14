@@ -142,16 +142,57 @@ end
 --Need Fix
 function MuteCmd(playerId, cmd)
     if (cmd[2] == nil) then
-        sendmessage(playerId, "[RA] Handles muting system for players")
-        sendmessage(playerId, "[RA] Syntax: mute <set/get> <id> <1/0>")
-        sendmessage(playerId, "[RA] Info: 0 - Muted, 1 - Unmuted")
+        sendmessage(playerId, "[RA] Handles global muting system for players")
+        sendmessage(playerId, "[RA] Syntax: tmute <set/remove> <steamid/id> <steamid/id> <time> <reason>")
+        sendmessage(playerId, "[RA] Example: tmute set id 9 1d shut_up")
         return -1
     elseif (cmd[2] == "set") then
-        setplayermute(cmd[4], cmd[3])
-        print(cmd[3]..cmd[4])
-        sendmessage(playerId, "[RA] Mute status set to "..getplayermute(cmd[3]).." for "..getplayernickname(cmd[3]).."("..cmd[3]..")")
+        if (cmd[4] == playerId) or (isplayeradmin(cmd[4]) and (getplayersteamid(playerId) ~= SuperuserID)) then
+            sendmessage(playerId, "[RA] You cannot mute yourself or other admins")
+            return -1
+        end
+        if (cmd[3] == "id") then
+            if (isplayerconnected(cmd[4]) == 0) then
+                sendmessage(playerId, "[RA] Player is not connected")
+                return -1
+            end
+            putinivalue("../PlayerData/playerdata.ini", getplayersteamid(cmd[4]), "mute_end", getunixtime() + TimeToSeconds(cmd[5]))
+            putinivalue("../PlayerData/playerdata.ini", getplayersteamid(cmd[4]), "mute_reason", cmd[6])
+            sendmessage(playerId, "[RA] Player "..getplayernickname(cmd[4]).."("..cmd[4]..")")
+            sendmessage(playerId, "[RA] has been muted for "..cmd[5].." - Reason: "..cmd[6])
+            setplayermute(0, cmd[4])
+            sendmessage(cmd[4], "[SERVER] You have been muted for "..cmd[5].." - Reason: "..cmd[6])
+
+        elseif (cmd[3] == "steamid") then
+            putinivalue("../PlayerData/playerdata.ini", cmd[4], "mute_end", getunixtime() + TimeToSeconds(cmd[5]))
+            putinivalue("../PlayerData/playerdata.ini", cmd[4], "mute_reason", cmd[6])
+            sendmessage(playerId, "[RA] Player "..getinivalue("../PlayerData/playerdata.ini", cmd[4], "nickname", "(Never connected)").."("..cmd[4]..")")
+            sendmessage(playerId, "[RA] has been muted for "..cmd[5].." - Reason: "..cmd[6])
+            sendmessage(playerId, "[RA] Note: You muted offline player")
+        end
+    elseif (cmd[2] == "remove") then
+        if (cmd[3] == "id") then
+            if (isplayerconnected(cmd[4]) == 0) then
+                sendmessage(playerId, "[RA] Player is not connected")
+                return -1
+            end
+            putinivalue("../PlayerData/playerdata.ini", getplayersteamid(cmd[4]), "mute_end", 0)
+            putinivalue("../PlayerData/playerdata.ini", getplayersteamid(cmd[4]), "mute_reason", "0")
+            sendmessage(playerId, "[RA] Player "..getplayernickname(cmd[4]).."("..cmd[4]..")")
+            sendmessage(playerId, "[RA] has been unmuted")
+            setplayermute(1, cmd[4])
+            sendmessage(cmd[4], "[SERVER] You have been unmuted")
+
+        elseif (cmd[3] == "steamid") then
+            putinivalue("../PlayerData/playerdata.ini", cmd[4], "mute_end", 0)
+            putinivalue("../PlayerData/playerdata.ini", cmd[4], "mute_reason", "Mute removed by "..getplayernickname(playerId))
+            sendmessage(playerId, "[RA] Player "..getinivalue("../PlayerData/playerdata.ini", cmd[4], "nickname", "(Never connected)").."("..cmd[4]..")")
+            sendmessage(playerId, "[RA] has been unmuted")
+        end
     else
-        sendmessage(playerId, "[RA] Mute status for "..getplayernickname(cmd[3]).."("..cmd[3]..") -> "..getplayermute(cmd[3]))
+        sendmessage(playerId, "[RA] Handles global muting system for players")
+        sendmessage(playerId, "[RA] Syntax: tmute <set/remove> <steamid/id> <steamid/id> <time> <reason>")
+        sendmessage(playerId, "[RA] Example: tmute set id 9 1d shut_up")
     end
 
     return -1
@@ -160,7 +201,7 @@ end
 function TempBCmd(playerId, cmd)
     if (cmd[2] == nil) then
         sendmessage(playerId, "[RA] Bans player for specified duration")
-        sendmessage(playerId, "[RA] Syntax: ban <Id> <time> <reason>")
+        sendmessage(playerId, "[RA] Syntax: tban <Id> <time> <reason>")
     elseif (isplayerconnected(cmd[2]) == 0) then
         sendmessage(playerId, "[RA] Player is not connected")
         return -1
@@ -365,7 +406,7 @@ function Sleep(n)
           -- nothing
         end
         return -1
-      end
+end
 
 function GetWordsExceptFirst(str)
     local isFirst = true
