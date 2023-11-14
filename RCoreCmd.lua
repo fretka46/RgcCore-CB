@@ -268,6 +268,7 @@ function PlayerInfoCmd(playerId, cmd)
                 local steamid = getplayersteamid(cmd[3])
                 local banend = tonumber(getinivalue("../PlayerData/playerdata.ini", steamid, "ban_end", "0"))
                 local muteend = tonumber(getinivalue("../PlayerData/playerdata.ini", steamid, "mute_end", "0"))
+                sendmessage(playerId, "-------------------------------")
                 sendmessage(playerId, "[RA] Player "..getplayernickname(cmd[3]).."("..cmd[3]..")")
                 sendmessage(playerId, "[RA] SteamID: "..getplayersteamid(cmd[3]))
 
@@ -297,10 +298,12 @@ function PlayerInfoCmd(playerId, cmd)
                 sendmessage(playerId, "[RA] First connect: "..TransferUnixToDate(getinivalue("../PlayerData/playerdata.ini", getplayersteamid(cmd[3]), "first_connect", "0")))
                 sendmessage(playerId, "[RA] Last connect: "..TransferUnixToDate(getinivalue("../PlayerData/playerdata.ini", getplayersteamid(cmd[3]), "last_connect", "0")))
                 sendmessage(playerId, "[RA] Play time: "..FormatTransfer(getinivalue("../PlayerData/playerdata.ini", getplayersteamid(cmd[3]), "play_time", "0")))
+                sendmessage(playerId, "-------------------------------")
 
         elseif (cmd[2] == "steamid") then
                 local banend = tonumber(getinivalue("../PlayerData/playerdata.ini", cmd[3], "ban_end", "0"))
                 local muteend = tonumber(getinivalue("../PlayerData/playerdata.ini", cmd[3], "mute_end", "0"))
+                sendmessage(playerId, "-------------------------------")
                 sendmessage(playerId, "[RA] Player "..getinivalue("../PlayerData/playerdata.ini", cmd[3], "nickname", "0").."("..cmd[3]..")")
                 sendmessage(playerId, "[RA] SteamID: "..cmd[3])
 
@@ -333,8 +336,8 @@ function PlayerInfoCmd(playerId, cmd)
                 if (isplayerconnected(cmd[3]) == 0) then
                     sendmessage(playerId, "Note: This is offline player info, some data may be outdated")
                 end
+                sendmessage(playerId, "-------------------------------")
         end
-        saveinifile("../PlayerData/playerdata.ini")
     end
 end
 
