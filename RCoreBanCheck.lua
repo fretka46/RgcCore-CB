@@ -30,7 +30,7 @@ function OnIncomingConnection(nickname, ip, steamid)
 
         local banreason = getinivalue("../PlayerData/playerdata.ini", steamid, "ban_reason", 0)
         local banduration = FormatTransfer(banend-getunixtime())
-        return "You are banned             Reason: [ "..banreason.." ] Ban expires in: "..banduration.." - for questions, contact us on discord"
+        return "You are banned\n Reason: "..banreason.."\n Ban expires in: "..banduration.."\n - For questions, contact us on discord"
 
     else return -1
     end

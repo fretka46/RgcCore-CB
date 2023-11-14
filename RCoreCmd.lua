@@ -172,9 +172,6 @@ function MuteCmd(playerId, cmd)
 end
 
 function TempBCmd(playerId, cmd)
-    if (cmd[5] == nil) then
-        cmd[5] = "no_reason"
-    end
     if (cmd[2] == nil) then
         sendmessage(playerId, "[RA] Bans player for specified duration")
         sendmessage(playerId, "[RA] Syntax: ban <Id> <time> <reason>")
@@ -186,6 +183,10 @@ function TempBCmd(playerId, cmd)
             sendmessage(playerId, "[RA] Nebanuj sve kolegy dik - fretka")
             return -1
         else
+            if (cmd[4] == nil) then
+                cmd[4] = "no_reason"
+            end
+
             local banDurationInSeconds
             if (cmd[3] == "perm") then
                 banDurationInSeconds = 9999999998
@@ -194,10 +195,10 @@ function TempBCmd(playerId, cmd)
             end
 
             putinivalue("../PlayerData/playerdata.ini", getplayersteamid(cmd[2]), "ban_end", getunixtime() + banDurationInSeconds)
-            putinivalue("../PlayerData/playerdata.ini", getplayersteamid(cmd[2]), "ban_reason", cmd[5])
+            putinivalue("../PlayerData/playerdata.ini", getplayersteamid(cmd[2]), "ban_reason", cmd[4])
 
             putinivalue("../PlayerData/banlog.ini", getplayersteamid(cmd[2]), "nickname", getplayernickname(cmd[2]))
-            putinivalue("../PlayerData/banlog.ini", getplayersteamid(cmd[2]), TransferSecToDDMMSS(banDurationInSeconds).." - "..cmd[5], getplayernickname(playerId))
+            putinivalue("../PlayerData/banlog.ini", getplayersteamid(cmd[2]), TimeToSeconds(banDurationInSeconds).." - "..cmd[4], getplayernickname(playerId))
 
             if (DebugCMD) then
                 print("[RCore(CMD) - DEBUG] Received ban report, updating RCore(DATA) database ...")
@@ -205,6 +206,9 @@ function TempBCmd(playerId, cmd)
             updateinifile("../PlayerData/playerdata.ini")
             updateinifile("../PlayerData/banlog.ini")
             kick(cmd[2], "")
+
+            sendmessage(playerId, "[RA] Sicessfully banned a player")
+            sendmessage(playerId, "[RA] "..getplayernickname(cmd[2]).."("..cmd[2]..") banned for "..cmd[3].." - Reason: "..cmd[4])
         end
     end
 
