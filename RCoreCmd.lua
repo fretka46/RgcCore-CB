@@ -172,7 +172,7 @@ function MuteCmd(playerId, cmd)
             sendmessage(playerId, "[RA] has been muted for "..cmd[5].." - Reason: "..cmd[6])
             sendmessage(playerId, "[RA] Note: You muted offline player")
         end
-        saveinifile("../PlayerData/playerdata.ini")
+        updateinifile("../PlayerData/playerdata.ini")
     elseif (cmd[2] == "remove") then
         if (cmd[3] == "id") then
             if (isplayerconnected(cmd[4]) == 0) then
@@ -192,7 +192,7 @@ function MuteCmd(playerId, cmd)
             sendmessage(playerId, "[RA] Player "..getinivalue("../PlayerData/playerdata.ini", cmd[4], "nickname", "(Never connected)").."("..cmd[4]..")")
             sendmessage(playerId, "[RA] has been unmuted")
         end
-        saveinifile("../PlayerData/playerdata.ini")
+        updateinifile("../PlayerData/playerdata.ini")
     else
         sendmessage(playerId, "[RA] Handles global muting system for players")
         sendmessage(playerId, "[RA] Syntax: tmute <set/remove> <steamid/id> <steamid/id> <time> <reason>")
