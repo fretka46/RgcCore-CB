@@ -44,7 +44,7 @@ function OnPlayerConnect(playerId)
         local muteduration = FormatTransfer(muteend-getunixtime())
         setplayermute(0, playerId)
         sendmessage(playerId, "[SERVER] You are muted - Reason: "..mutereason")")
-        sendmessage(playerId, "[SERVER] Mute expires in: "..FormatTransfer(muteduration).." - For questions, contact us on discord")
+        sendmessage(playerId, "[SERVER] Mute expires in: "..muteduration.." - For questions, contact us on discord")
     else
         if (DebugBANC) then
             print("[RCore(BANC) - DEBUG] Player succesfully connceted with no bans or mutes")
