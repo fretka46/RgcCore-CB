@@ -39,7 +39,7 @@ end
 function OnPlayerConnect(playerId)
     local muteend = tonumber(getinivalue("../PlayerData/playerdata.ini", getplayersteamid(playerId), "mute_end", 0))
     if (muteend > getunixtime()) then
-        print("[RCore - BANC] Registered muted player - "..getplayernickname(playerId).." ("..getplayerip(playerId)..") muting ...")
+        print("[RCore - BANC] Registered muted player - "..getplayernickname(playerId).." ("..getplayersteamid(playerId)..") muting ...")
         local mutereason = getinivalue("../PlayerData/playerdata.ini", getplayersteamid(playerId), "mute_reason", 0)
         local muteduration = FormatTransfer(muteend-getunixtime())
         setplayermute(0, playerId)
