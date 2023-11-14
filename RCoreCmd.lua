@@ -345,7 +345,3 @@ function TimeToSeconds(timeStr)
 
     return totalSeconds
 end
-local timeStr = "12M16d17m"
-local seconds = timeToSeconds(timeStr)
-print(seconds)  -- Outputs: 13111200
-print("To DDMMSS: -> "..TransferSecToDDMMSS(seconds))

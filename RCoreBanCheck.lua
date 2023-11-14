@@ -54,23 +54,3 @@ function FormatTransfer(sec)
     if s > 0 then str = str .. s .. "s" end
     return str
 end
-
-function timeToSeconds(timeStr)
-    local totalSeconds = 0
-    local units = {
-        M = 30 * 24 * 60 * 60,  -- month in seconds
-        d = 24 * 60 * 60,  -- day in seconds
-        h = 60 * 60,  -- hour in seconds
-        m = 60  -- minute in seconds
-    }
-
-    for value, unit in string.gmatch(timeStr, "(%d+)(%a)") do
-        totalSeconds = totalSeconds + tonumber(value) * units[unit]
-    end
-
-    return totalSeconds
-end
-local timeStr = "12M16d17m"
-local seconds = timeToSeconds(timeStr)
-print(seconds)  -- Outputs: 13111200
-print("To DDMMSS: -> "..TransferSecToDDMMSS(seconds))
