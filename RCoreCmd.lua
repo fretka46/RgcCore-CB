@@ -207,7 +207,7 @@ function TempBCmd(playerId, cmd)
             updateinifile("../PlayerData/banlog.ini")
             kick(cmd[2], "")
 
-            sendmessage(playerId, "[RA] Sicessfully banned a player")
+            sendmessage(playerId, "[RA] Sucessfully banned a player")
             sendmessage(playerId, "[RA] "..getplayernickname(cmd[2]).."("..cmd[2]..") banned for "..cmd[3].." - Reason: "..cmd[4])
         end
     end
