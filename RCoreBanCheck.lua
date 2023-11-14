@@ -45,10 +45,10 @@ function OnPlayerConnect(playerId)
         setplayermute(0, playerId)
         sendmessage(playerId, "[SERVER] You are muted - Reason: "..mutereason")")
         sendmessage(playerId, "[SERVER] Mute expires in: "..FormatTransfer(muteduration).." - For questions, contact us on discord")
-        
-    end
-    if (DebugBANC) then
-    print("[RCore(BANC) - DEBUG] Registered player connection")
+    else
+        if (DebugBANC) then
+            print("[RCore(BANC) - DEBUG] Player succesfully connceted with no bans or mutes")
+        end
     end
 
     return -1
