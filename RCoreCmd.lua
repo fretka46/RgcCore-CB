@@ -42,7 +42,7 @@
         elseif (cmd[1] == "setmtftimer") then
             SetMtfTimerCmd(playerId, cmd)
 
-        elseif (cmd[1] == "createnpc") then
+        elseif (cmd[1] == "npc") then
             CreateNpcCmd(playerId, cmd)
 
         --Banning RA
@@ -146,10 +146,10 @@ function CreateNpcCmd(playerId, cmd)
             sendmessage(playerId, "[RA] Npc created with id -> "..npcid)
         elseif (cmd[2] == "gettype") then
             sendmessage(playerId, "[RA] NPC Type for id: "..cmd[3].." is -> "..getnpcid(cmd[3]))
-    end
+        end
     else
         sendmessage(playerId, "[RA] Creates a new NPC")
-        sendmessage(playerId, "[RA] Syntax: createnpc <npctype>")
+        sendmessage(playerId, "[RA] Syntax: npc <create/gettype> <npctype/getid>")
     end
 end
 
