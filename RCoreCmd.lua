@@ -436,8 +436,8 @@ function SetCustomMapCmd(cmd, playerId)
 end
 
 function RconCmd(playerId, message)
-    GetWordsExceptFirst(message)
-    sendmessage(playerId, "[RCON-RA] Sending -> "..GetWordsExceptFirst(message))
+    rconcommand(GetWordsExceptFirst(message))
+    sendmessage(playerId, "[RCON-RA] Command sent -> "..GetWordsExceptFirst(message))
 end
 
 function SaveDatabaseCmd(playerId)
