@@ -435,6 +435,7 @@ function SetMapSeedCmd(cmd, playerId)
     return -1
 end
 
+--Doesnt work, need fix
 function SetCustomMapCmd(cmd, playerId)
     if (cmd[2] ~= nil) then
         print("Player "..getplayernickname(playerId).."("..playerId..") forced CustomMap change")
