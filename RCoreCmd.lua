@@ -40,7 +40,7 @@
         for str in string.gmatch(message, "([^"..separator.."]+)") do
                 table.insert(cmd, str)
         end
-    ---------------
+        ---------------
         --Basic RA
         if (cmd[1] == "ping") then
             sendmessage(playerId, "[RA] Pong, pong!")
@@ -96,7 +96,8 @@
         elseif (DebugCMD) then
             print("[RCore(CMD) - DEBUG] Player sent unregistered command")
         end
-    end)
+    end
+    )
 
 
     -- If pcall returned false, an error occurred
