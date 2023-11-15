@@ -17,6 +17,12 @@
         return -1
     end
 
+    function OnPlayerChat(playerId, message)
+        if (message == "/stats") then
+            PlayerStats(playerId)
+            return -1
+        end
+    end
 
     function OnPlayerConsole(playerId, message)
         if (DebugCMD) then print("[RCore(CMD) - DEBUG] "..getplayernickname(playerId).."("..playerId..") RA -> (" .. message .. ")") end
@@ -368,6 +374,17 @@ function AdminPlayerStatsCmd(playerId, cmd)
             sendmessage(playerId, "-------------------------------")
         end
     end
+end
+
+function PlayerStats(playerId)
+    sendmessage(playerId, "-------------------------------")
+    sendmessage(playerId, "[SERVER] Showing your stats:")
+    sendmessage(playerId, "[SERVER] Player "..getplayernickname(playerId).."("..playerId..")")
+    sendmessage(playerId, "[SERVER] Human kills: "..getinivalue("../PlayerData/playerdata.ini", getplayersteamid(playerId), "kills_human", "0"))
+    sendmessage(playerId, "[SERVER] SCP kills: "..getinivalue("../PlayerData/playerdata.ini", getplayersteamid(playerId), "kills_scp", "0"))
+    sendmessage(playerId, "[SERVER] Deaths: "..getinivalue("../PlayerData/playerdata.ini", getplayersteamid(playerId), "deaths", "0"))
+    sendmessage(playerId, "[SERVER] Escapes: "..getinivalue("../PlayerData/playerdata.ini", getplayersteamid(playerId), "escapes", "0"))
+    sendmessage(playerId, "-------------------------------")
 end
 
 
