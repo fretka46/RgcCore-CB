@@ -20,8 +20,9 @@
     function OnPlayerChat(playerId, message)
         if (message == "/stats") then
             PlayerStats(playerId)
-            return -1
         end
+
+        return -1
     end
 
     function OnPlayerConsole(playerId, message)
@@ -81,8 +82,10 @@
                 SaveDatabaseCmd(playerId)
             elseif (cmd[1] == "test") then
                 sendmessage(playerId, "[RA] Test\n line command")
-            end
 
+            elseif (DebugCMD) then
+                print("[RCore(CMD) - DEBUG] SuperUser sent unregistered command")
+            end
 
 
         elseif (DebugCMD) then
