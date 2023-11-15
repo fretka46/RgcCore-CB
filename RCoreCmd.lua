@@ -374,6 +374,8 @@ function AdminPlayerStatsCmd(playerId, cmd)
             sendmessage(playerId, "-------------------------------")
         end
     end
+
+    return -1
 end
 
 function PlayerStats(playerId)
@@ -385,6 +387,8 @@ function PlayerStats(playerId)
     sendmessage(playerId, "[SERVER] Deaths: "..getinivalue("../PlayerData/playerdata.ini", getplayersteamid(playerId), "deaths", "0"))
     sendmessage(playerId, "[SERVER] Escapes: "..getinivalue("../PlayerData/playerdata.ini", getplayersteamid(playerId), "escapes", "0"))
     sendmessage(playerId, "-------------------------------")
+
+    return -1
 end
 
 
