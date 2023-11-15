@@ -18,8 +18,12 @@
     end
 
     function OnPlayerChat(playerId, message)
-        if (message == "/stats") then
+        if (message == ": /stats") then
             PlayerStats(playerId)
+
+            if (DebugCMD) then
+                print("[RCore(CMD) - DEBUG] Registered /stats command")
+            end
         end
 
         return -1
