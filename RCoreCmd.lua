@@ -169,8 +169,6 @@ function SetMtfTimerCmd(playerId, cmd)
     return -1
 end
 
-
---Need Fix
 function MuteCmd(playerId, cmd)
     if (cmd[2] == nil) then
         sendmessage(playerId, "[RA] Handles global muting system for players")
