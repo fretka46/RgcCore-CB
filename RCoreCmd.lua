@@ -52,6 +52,8 @@
             KickCmd(playerId, cmd)
         elseif (cmd[1] == "pinfo") then
             PlayerInfoCmd(playerId, cmd)
+        elseif (cmd[1] == "pstats") then
+            AdminPlayerStatsCmd(playerId, cmd)
 
         --Server RA
         elseif (cmd[1] == "debug") then
@@ -336,6 +338,35 @@ function PlayerInfoCmd(playerId, cmd)
                 sendmessage(playerId, "[RA] Play time: "..FormatTransfer(getinivalue("../PlayerData/playerdata.ini", cmd[3], "play_time", "0")))
                 sendmessage(playerId, "Note: This is offline player info, some data may be outdated")
                 sendmessage(playerId, "-------------------------------")
+        end
+    end
+end
+
+function AdminPlayerStatsCmd(playerId, cmd)
+    if (cmd[2] == nil) then
+        sendmessage(playerId, "[RA] Shows player stats")
+        sendmessage(playerId, "[RA] Syntax: pstats <id/steamdid> <id/steamdid>")
+        sendmessage(playerId, "[RA] Example: pstats id 9")
+    else
+        if (cmd[2] == "id") then
+            local steamid = getplayersteamid(cmd[3])
+            sendmessage(playerId, "-------------------------------")
+            sendmessage(playerId, "[RA] Player "..getplayernickname(cmd[3]).."("..cmd[3]..")")
+            sendmessage(playerId, "[RA] SteamID: "..getplayersteamid(cmd[3]))
+            sendmessage(playerId, "[RA] Human kills: "..getinivalue("../PlayerData/playerdata.ini", steamid, "kills_human", "0"))
+            sendmessage(playerId, "[RA] SCP kills: "..getinivalue("../PlayerData/playerdata.ini", steamid, "kills_scp", "0"))
+            sendmessage(playerId, "[RA] Deaths: "..getinivalue("../PlayerData/playerdata.ini", steamid, "deaths", "0"))
+            sendmessage(playerId, "[RA] Escapes: "..getinivalue("../PlayerData/playerdata.ini", steamid, "escapes", "0"))
+            sendmessage(playerId, "-------------------------------")
+        elseif (cmd[2] == "steamid") then
+            sendmessage(playerId, "-------------------------------")
+            sendmessage(playerId, "[RA] Player "..getinivalue("../PlayerData/playerdata.ini", cmd[3], "nickname", "0").."("..cmd[3]..")")
+            sendmessage(playerId, "[RA] SteamID: "..cmd[3])
+            sendmessage(playerId, "[RA] Human kills: "..getinivalue("../PlayerData/playerdata.ini", cmd[3], "kills_human", "0"))
+            sendmessage(playerId, "[RA] SCP kills: "..getinivalue("../PlayerData/playerdata.ini", cmd[3], "kills_scp", "0"))
+            sendmessage(playerId, "[RA] Deaths: "..getinivalue("../PlayerData/playerdata.ini", cmd[3], "deaths", "0"))
+            sendmessage(playerId, "[RA] Escapes: "..getinivalue("../PlayerData/playerdata.ini", cmd[3], "escapes", "0"))
+            sendmessage(playerId, "-------------------------------")
         end
     end
 end
