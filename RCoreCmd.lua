@@ -30,10 +30,11 @@
     end
 
     function OnPlayerConsole(playerId, message)
+    -- Wrap the body of the function in a pcall to catch errors
+    local status, err = pcall(function()
         if (DebugCMD) then print("[RCore(CMD) - DEBUG] "..getplayernickname(playerId).."("..playerId..") RA -> (" .. message .. ")") end
-        if (Rconactive) then RconCmd(playerId, message) end
 
-    -- Core method that separates words and make command syntax possible
+        -- Core method that separates words and make command syntax possible
         local separator = "%s"
         local cmd = {}
         for str in string.gmatch(message, "([^"..separator.."]+)") do
@@ -95,8 +96,21 @@
         elseif (DebugCMD) then
             print("[RCore(CMD) - DEBUG] Player sent unregistered command")
         end
+    end)
 
-        return -1
+
+    -- If pcall returned false, an error occurred
+    if not status then
+        -- Log the error
+        print("[RCore(CMD) - ERROR] An error occurred: " .. err)
+
+                -- Send a message to the player
+                sendmessage(playerId, "[RA] Wrong command syntax")
+                sendmessage(playerId, "[RA] 100% sure? DM Fretka with error below")
+                sendmessage(playerId, "[ERR] "..err)
+                sendmessage(playerId, "[ERR] In: "..message)
+        end
+    return -1
     end
 
     --------------------
@@ -426,10 +440,11 @@ function SetCustomMapCmd(cmd, playerId)
     if (cmd[2] ~= nil) then
         print("Player "..getplayernickname(playerId).."("..playerId..") forced CustomMap change")
         sendmessage(playerId, "[RA] Map changed, restarting ...")
-        setcustommap(cmd[2]..".cbmap2")
+        setcustommap("../Maps/rpmap.cbmap2")
     else
         sendmessage(playerId, "[RA] Restarts server and changes custom map")
-        sendmessage(playerId, "[RA] Syntax: setmap <MapName>")
+        sendmessage(playerId, "[RA] Syntax: setmap <map>")
+        sendmessage(playerId, "[RA] Example: setmap rpmap")
     end
 
     return -1
