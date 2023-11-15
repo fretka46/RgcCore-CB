@@ -43,7 +43,6 @@
             SetMtfTimerCmd(playerId, cmd)
 
         --Banning RA
-        -- Doesnt work, need fix
         elseif (cmd[1] == "tmute") then
             MuteCmd(playerId, cmd)
         elseif (cmd[1] == "tban") then
