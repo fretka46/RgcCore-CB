@@ -56,6 +56,9 @@
 
         elseif (cmd[1] == "setname") then
             SetNameCmd(playerId, cmd)
+        
+        elseif (cmd[1] == "plist") then
+            PlayerListCmd(playerId)
 
         --Banning RA
         elseif (cmd[1] == "tban") then
@@ -185,6 +188,19 @@ function SetNameCmd(playerId, cmd)
         sendmessage(playerId, "[RA] Syntax: setname <id> <name>")
     end
 
+    return -1
+end
+
+function PlayerListCmd(playerId)
+    local playerIds = GetAllPlayerIds()
+    sendmessage(playerId, "[RA] Player list:")
+    sendmessage(playerId, "[RA] -------------------------------")
+    for _, id in ipairs(playerIds) do
+        local playertype = getplayertype(id)
+        local playerInfo = id.." - ".. getplayernickname(id) .. "(" .. RoleTypeToString(playertype)")"
+        sendmessage(playerId, playerInfo)
+    end
+    sendmessage(playerId, "[RA] -------------------------------")
     return -1
 end
 
@@ -481,4 +497,40 @@ function TimeToSeconds(timeStr)
     end
 
     return totalSeconds
+end
+
+function GetAllPlayerIds()
+    local playerIds = {}
+    for playerId = 0, 31 do
+        if isplayerconnected(playerId) == 1 then
+            table.insert(playerIds, playerId)
+        end
+    end
+    return playerIds
+end
+
+function RoleTypeToString(roleType)
+    local roleTypes = {
+        [0] = "Spectator",
+        [1] = "MTF",
+        [2] = "Guard",
+        [3] = "Class-D",
+        [4] = "Scientist",
+        [5] = "SCP-173",
+        [6] = "SCP-049",
+        [7] = "Chaos Soldier",
+        [8] = "Janitor(lvl-1)",
+        [9] = "Janitor(lvl-2)",
+        [10] = "SCP-939",
+        [11] = "SCP-106",
+        [12] = "SCP-966",
+        [13] = "SCP-049-2",
+        [14] = "SCP-096",
+        [15] = "SCP-860-2",
+        [16] = "SCP-035",
+        [17] = "Clerk",
+        [18] = "Lobby"
+    }
+
+    return roleTypes[roleType] or "Unknown"
 end
