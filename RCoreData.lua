@@ -100,3 +100,45 @@ function OnPlayerDisconnect(playerId, message)
 
   return -1
 end
+
+
+
+
+-- Player stats handlers
+
+function OnPlayerKillPlayer(killerId, victimId)
+  print(getplayertype(killerId))
+  if (DebugDATA) then
+    print("[RCore(DATA) - DEBUG] Registered player kill")
+  end
+-- ClassD kill == Scp kill?
+  local humanTypes = {1, 2, 3, 4, 7, 8, 9, 17, 18}
+  PlayerDeaths[victimId] = PlayerDeaths[victimId] + 1
+
+  if (table.contains(humanTypes, getplayertype(killerId))) then
+      PlayerHumanKills[killerId] = PlayerHumanKills[killerId] + 1
+  else
+      PlayerScpKills[killerId] = PlayerScpKills[killerId] + 1
+  end
+
+  return -1
+end
+
+function OnPlayerEscape(playerId)
+  if (DebugDATA) then
+    print("[RCore(DATA) - DEBUG] Registered player escape")
+  end
+
+  PlayerEscapes[playerId] = PlayerEscapes[playerId] + 1
+
+  return -1
+end
+
+function table.contains(table, element)
+  for _, value in pairs(table) do
+    if value == element then
+      return true
+    end
+  end
+  return false
+end
