@@ -200,7 +200,7 @@ function PlayerListCmd(playerId)
     sendmessage(playerId, "[RA] -------------------------------")
     for _, id in ipairs(playerIds) do
         local playertype = getplayertype(id)
-        local playerInfo = id.." - ".. getplayernickname(id) .. "(" .. RoleTypeToString(playertype)")"
+        local playerInfo = id.." - ".. getplayernickname(id) .. "(" ..RoleTypeToString(playertype)..")"
         sendmessage(playerId, playerInfo)
     end
     sendmessage(playerId, "[RA] -------------------------------")
