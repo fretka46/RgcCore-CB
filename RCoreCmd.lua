@@ -54,6 +54,9 @@
         elseif (cmd[1] == "setmtftimer") then
             SetMtfTimerCmd(playerId, cmd)
 
+        elseif (cmd[1] == "setname") then
+            SetNameCmd(playerId, cmd)
+
         --Banning RA
         elseif (cmd[1] == "tban") then
             TempBCmd(playerId, cmd)
@@ -164,6 +167,22 @@ function SetMtfTimerCmd(playerId, cmd)
     else
         sendmessage(playerId, "[RA] Sets MTF respawn time")
         sendmessage(playerId, "[RA] Syntax: setmtftimer <seconds>")
+    end
+
+    return -1
+end
+
+function SetNameCmd(playerId, cmd)
+    if (cmd[2] ~= nil) then
+        if (isplayerconnected(cmd[2]) == 0) then
+            sendmessage(playerId, "[RA] Player is not connected")
+            return -1
+        end
+        changeplayername(cmd[2], cmd[3])
+        sendmessage(cmd[2], "[RA] Name changed to "..cmd[3])
+    else
+        sendmessage(playerId, "[RA] Sets player name")
+        sendmessage(playerId, "[RA] Syntax: setname <id> <name>")
     end
 
     return -1
