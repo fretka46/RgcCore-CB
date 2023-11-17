@@ -55,8 +55,6 @@
             SetMtfTimerCmd(playerId, cmd)
 
         --Banning RA
-        elseif (cmd[1] == "tmute") then
-            MuteCmd(playerId, cmd)
         elseif (cmd[1] == "tban") then
             TempBCmd(playerId, cmd)
         elseif (cmd[1] == "tkick") then
@@ -122,6 +120,7 @@ function SetIntercomCmd(cmd, playerId)
     if (cmd[2] == nil) then
         sendmessage(playerId, "[RA] Disables or enables global intercom")
         sendmessage(playerId, "[RA] Syntax: i <enable/disable>")
+        sendmessage(playerId, "IsUsing? - "..isplayerusingintercom(playerId))
         return -1
     elseif (cmd[2] == "enable") or (cmd[2] == "e") then
         setplayerintercom(playerId, 1)
@@ -165,71 +164,6 @@ function SetMtfTimerCmd(playerId, cmd)
     else
         sendmessage(playerId, "[RA] Sets MTF respawn time")
         sendmessage(playerId, "[RA] Syntax: setmtftimer <seconds>")
-    end
-
-    return -1
-end
-
-function MuteCmd(playerId, cmd)
-    if (cmd[2] == nil) then
-        sendmessage(playerId, "[RA] Handles global muting system for players")
-        sendmessage(playerId, "[RA] Syntax: tmute <set/remove> <steamid/id> <steamid/id> <time> <reason>")
-        sendmessage(playerId, "[RA] Example: tmute set id 9 1d shut_up")
-        return -1
-    elseif (cmd[2] == "set") then
-        if (cmd[4] == playerId) and (getplayersteamid(playerId) ~= SuperuserID) then
-            sendmessage(playerId, "[RA] You cannot mute yourself")
-            return -1
-        end
-        if(isplayeradmin(cmd[4]) == 1) then
-            sendmessage(playerId, "[RA] You cannot mute admins")
-            return -1
-        end
-
-        if (cmd[3] == "id") then
-            if (isplayerconnected(cmd[4]) == 0) then
-                sendmessage(playerId, "[RA] Player is not connected")
-                return -1
-            end
-            putinivalue("../PlayerData/playerdata.ini", getplayersteamid(cmd[4]), "mute_end", getunixtime() + TimeToSeconds(cmd[5]))
-            putinivalue("../PlayerData/playerdata.ini", getplayersteamid(cmd[4]), "mute_reason", cmd[6])
-            sendmessage(playerId, "[RA] Player "..getplayernickname(cmd[4]).."("..cmd[4]..")")
-            sendmessage(playerId, "[RA] has been muted for "..cmd[5].." - Reason: "..cmd[6])
-            rconcommand("mute "..cmd[4])
-            sendmessage(cmd[4], "[SERVER] You have been muted for "..cmd[5].." - Reason: "..cmd[6])
-
-        elseif (cmd[3] == "steamid") then
-            putinivalue("../PlayerData/playerdata.ini", cmd[4], "mute_end", getunixtime() + TimeToSeconds(cmd[5]))
-            putinivalue("../PlayerData/playerdata.ini", cmd[4], "mute_reason", cmd[6])
-            sendmessage(playerId, "[RA] Player "..getinivalue("../PlayerData/playerdata.ini", cmd[4], "nickname", "(Never connected)").."("..cmd[4]..")")
-            sendmessage(playerId, "[RA] has been muted for "..cmd[5].." - Reason: "..cmd[6])
-            sendmessage(playerId, "[RA] Note: You muted offline player")
-        end
-        updateinifile("../PlayerData/playerdata.ini")
-    elseif (cmd[2] == "remove") then
-        if (cmd[3] == "id") then
-            if (isplayerconnected(cmd[4]) == 0) then
-                sendmessage(playerId, "[RA] Player is not connected")
-                return -1
-            end
-            putinivalue("../PlayerData/playerdata.ini", getplayersteamid(cmd[4]), "mute_end", 0)
-            putinivalue("../PlayerData/playerdata.ini", getplayersteamid(cmd[4]), "mute_reason", "0")
-            sendmessage(playerId, "[RA] Player "..getplayernickname(cmd[4]).."("..cmd[4]..")")
-            sendmessage(playerId, "[RA] has been unmuted")
-            setplayermute(1, cmd[4])
-            sendmessage(cmd[4], "[SERVER] You have been unmuted")
-
-        elseif (cmd[3] == "steamid") then
-            putinivalue("../PlayerData/playerdata.ini", cmd[4], "mute_end", 0)
-            putinivalue("../PlayerData/playerdata.ini", cmd[4], "mute_reason", "Mute removed by "..getplayernickname(playerId))
-            sendmessage(playerId, "[RA] Player "..getinivalue("../PlayerData/playerdata.ini", cmd[4], "nickname", "(Never connected)").."("..cmd[4]..")")
-            sendmessage(playerId, "[RA] has been unmuted")
-        end
-        updateinifile("../PlayerData/playerdata.ini")
-    else
-        sendmessage(playerId, "[RA] Handles global muting system for players")
-        sendmessage(playerId, "[RA] Syntax: tmute <set/remove> <steamid/id> <steamid/id> <time> <reason>")
-        sendmessage(playerId, "[RA] Example: tmute set id 9 1d shut_up")
     end
 
     return -1
@@ -302,7 +236,6 @@ function PlayerInfoCmd(playerId, cmd)
         if (cmd[2] == "id") then
                 local steamid = getplayersteamid(cmd[3])
                 local banend = tonumber(getinivalue("../PlayerData/playerdata.ini", steamid, "ban_end", "0"))
-                local muteend = tonumber(getinivalue("../PlayerData/playerdata.ini", steamid, "mute_end", "0"))
                 sendmessage(playerId, "-------------------------------")
                 sendmessage(playerId, "[RA] Player "..getplayernickname(cmd[3]).."("..cmd[3]..")")
                 sendmessage(playerId, "[RA] SteamID: "..getplayersteamid(cmd[3]))
@@ -321,14 +254,6 @@ function PlayerInfoCmd(playerId, cmd)
                     sendmessage(playerId, "[RA] Banned: No")
                 end
 
-                --Outputs mute information
-                if (muteend > unixtime) then
-                    sendmessage(playerId, "[RA] Global muted: Yes")
-                    sendmessage(playerId, "[RA] Global mute expires in: "..FormatTransfer(muteend-unixtime))
-                else
-                    sendmessage(playerId, "[RA] Global muted: No")
-                end
-
                 sendmessage(playerId, "[RA] Current Mute status: "..getplayermute(cmd[3]))
                 sendmessage(playerId, "[RA] First connect: "..TransferUnixToDate(getinivalue("../PlayerData/playerdata.ini", getplayersteamid(cmd[3]), "first_connect", "0")))
                 sendmessage(playerId, "[RA] Last connect: "..TransferUnixToDate(getinivalue("../PlayerData/playerdata.ini", getplayersteamid(cmd[3]), "last_connect", "0")))
@@ -337,7 +262,6 @@ function PlayerInfoCmd(playerId, cmd)
 
         elseif (cmd[2] == "steamid") then
                 local banend = tonumber(getinivalue("../PlayerData/playerdata.ini", cmd[3], "ban_end", "0"))
-                local muteend = tonumber(getinivalue("../PlayerData/playerdata.ini", cmd[3], "mute_end", "0"))
                 sendmessage(playerId, "-------------------------------")
                 sendmessage(playerId, "[RA] Player "..getinivalue("../PlayerData/playerdata.ini", cmd[3], "nickname", "0").."("..cmd[3]..")")
                 sendmessage(playerId, "[RA] SteamID: "..cmd[3])
@@ -354,14 +278,6 @@ function PlayerInfoCmd(playerId, cmd)
                     sendmessage(playerId, "[RA] Ban expires in: "..FormatTransfer(banend-unixtime))
                 else
                     sendmessage(playerId, "[RA] Banned: No")
-                end
-
-                --Outputs mute information
-                if (muteend > unixtime) then
-                    sendmessage(playerId, "[RA] Global muted: Yes")
-                    sendmessage(playerId, "[RA] Global mute expires in: "..FormatTransfer(muteend-unixtime))
-                else
-                    sendmessage(playerId, "[RA] Global muted: No")
                 end
 
                 sendmessage(playerId, "[RA] First connect: "..TransferUnixToDate(getinivalue("../PlayerData/playerdata.ini", cmd[3], "first_connect", "0")))
@@ -457,8 +373,8 @@ function SetCustomMapCmd(cmd, playerId)
 end
 
 function RconCmd(playerId, message)
-    rconcommand(GetWordsExceptFirst(message))
-    sendmessage(playerId, "[RCON-RA] Command sent -> "..GetWordsExceptFirst(message))
+    rconcommand(message)
+    sendmessage(playerId, "[RCON-RA] Command sent -> "..message)
 end
 
 function SaveDatabaseCmd(playerId)
