@@ -73,6 +73,7 @@
         elseif (cmd[1] == "restartserver") or (cmd[1] == "rser" ) then
             RestartServerCmd(playerId)
 
+        -- doesnt work, need fix
         elseif (cmd[1] == "setseed") then
             SetMapSeedCmd(cmd, playerId)
 
@@ -176,10 +177,15 @@ function MuteCmd(playerId, cmd)
         sendmessage(playerId, "[RA] Example: tmute set id 9 1d shut_up")
         return -1
     elseif (cmd[2] == "set") then
-        if (cmd[4] == playerId) or (isplayeradmin(cmd[4]) and (getplayersteamid(playerId) ~= SuperuserID)) then
-            sendmessage(playerId, "[RA] You cannot mute yourself or other admins")
+        if (cmd[4] == playerId) and (getplayersteamid(playerId) ~= SuperuserID) then
+            sendmessage(playerId, "[RA] You cannot mute yourself")
             return -1
         end
+        if(isplayeradmin(cmd[4]) == 1) then
+            sendmessage(playerId, "[RA] You cannot mute admins")
+            return -1
+        end
+
         if (cmd[3] == "id") then
             if (isplayerconnected(cmd[4]) == 0) then
                 sendmessage(playerId, "[RA] Player is not connected")
@@ -189,7 +195,7 @@ function MuteCmd(playerId, cmd)
             putinivalue("../PlayerData/playerdata.ini", getplayersteamid(cmd[4]), "mute_reason", cmd[6])
             sendmessage(playerId, "[RA] Player "..getplayernickname(cmd[4]).."("..cmd[4]..")")
             sendmessage(playerId, "[RA] has been muted for "..cmd[5].." - Reason: "..cmd[6])
-            setplayermute(0, cmd[4])
+            rconcommand("mute "..cmd[4])
             sendmessage(cmd[4], "[SERVER] You have been muted for "..cmd[5].." - Reason: "..cmd[6])
 
         elseif (cmd[3] == "steamid") then

@@ -42,7 +42,7 @@ function OnPlayerConnect(playerId)
         print("[RCore - BANC] Registered muted player - "..getplayernickname(playerId).." ("..getplayersteamid(playerId)..") muting ...")
         local mutereason = getinivalue("../PlayerData/playerdata.ini", getplayersteamid(playerId), "mute_reason", 0)
         local muteduration = FormatTransfer(muteend-getunixtime())
-        setplayermute(0, playerId)
+        rconcommand("mute "..playerId)
         sendmessage(playerId, "[SERVER] You are muted - Reason: "..mutereason)
         sendmessage(playerId, "[SERVER] Mute expires in: "..muteduration.." - For questions, contact us on discord")
     else
