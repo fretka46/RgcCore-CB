@@ -47,18 +47,21 @@
     
         elseif (cmd[1] == "size") then
             ChangeSizeCmd(playerId, cmd)
-    
+
         elseif (cmd[1] == "i") then
             SetIntercomCmd(cmd, playerId)
-        
+
         elseif (cmd[1] == "setmtftimer") then
             SetMtfTimerCmd(playerId, cmd)
 
         elseif (cmd[1] == "setname") then
             SetNameCmd(playerId, cmd)
-        
+
         elseif (cmd[1] == "plist") then
             PlayerListCmd(playerId)
+
+        elseif (cmd[1] == "rolelist") then
+            RoleListCmd(playerId)
 
         --Banning RA
         elseif (cmd[1] == "tban") then
@@ -202,6 +205,16 @@ function PlayerListCmd(playerId)
     end
     sendmessage(playerId, "[RA] -------------------------------")
     return -1
+end
+
+function RoleListCmd(playerId)
+    local roleTypes = {}
+    sendmessage(playerId, "[RA] Role list:")
+    sendmessage(playerId, "[RA] -------------------------------")
+    for roleTypes = 0, 18 do
+        sendmessage(playerId, roleTypes .. " - " .. RoleTypeToString(roleTypes))
+    end
+    sendmessage(playerId, "[RA] -------------------------------")
 end
 
 function TempBCmd(playerId, cmd)
